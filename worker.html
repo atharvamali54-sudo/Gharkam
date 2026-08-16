@@ -85,10 +85,12 @@
                     <p class="text-xs text-gray-700"><strong>Area:</strong> <span id="orderAreaText">--</span></p>
                     <p class="text-xs text-gray-700"><strong>Address:</strong> <span id="orderAddress">--</span></p>
                     
-                    <!-- Customer Photo Display Section -->
-                    <div id="photoContainer" class="hidden pt-1">
-                        <p class="text-[11px] font-bold text-gray-700 mb-1">Kamacha Photo:</p>
-                        <img id="orderPhotoImg" src="" alt="Work Photo" class="w-full h-36 object-cover rounded-lg border border-blue-300 shadow-inner">
+                    <!-- Customer Photo Display Section (Full View Fix) -->
+                    <div id="photoContainer" class="hidden pt-2">
+                        <p class="text-[11px] font-bold text-gray-700 mb-1">Kamacha Photo (Full View):</p>
+                        <div class="bg-gray-900 p-2 rounded-xl border border-blue-300 flex justify-center items-center overflow-hidden">
+                            <img id="orderPhotoImg" src="" alt="Work Photo" class="w-auto h-auto max-h-80 max-w-full object-contain rounded-lg shadow-md">
+                        </div>
                     </div>
 
                     <div class="flex space-x-2 pt-2">
@@ -199,7 +201,7 @@
                     document.getElementById('orderAreaText').innerText = currentOrderData.area;
                     document.getElementById('orderAddress').innerText = currentOrderData.address;
                     
-                    // Display uploaded photo if available
+                    // Display full uploaded photo without cropping
                     if (currentOrderData.photo) {
                         document.getElementById('orderPhotoImg').src = currentOrderData.photo;
                         photoContainer.classList.remove('hidden');
@@ -230,7 +232,6 @@
                 return;
             }
 
-            // Google Maps direction/search integration
             let customerAddress = currentOrderData ? currentOrderData.address : "Pune"; 
             let mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(customerAddress);
             window.open(mapUrl, '_blank');
