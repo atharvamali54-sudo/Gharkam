@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gharkam.com - Login & Signup Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .hero-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="hero-bg min-h-screen flex flex-col justify-between text-gray-800">
+
+    <!-- Header -->
+    <header class="w-full py-4 px-6 flex justify-between items-center bg-white/10 backdrop-blur-md border-b border-white/20">
+        <div class="flex items-center space-x-3">
+            <div class="bg-white p-2 rounded-full shadow-lg font-bold text-blue-600 text-xl">🏠 GK</div>
+            <div>
+                <h1 class="text-white text-2xl font-bold">GHARKAM<span class="text-yellow-400">.com</span></h1>
+                <p class="text-xs text-blue-200">Pune City Services</p>
+            </div>
+        </div>
+        <div>
+            <span id="location-status" class="text-xs bg-yellow-400 text-gray-900 px-3 py-1.5 rounded-full font-semibold shadow-inner">📍 Checking Location...</span>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="flex-grow flex items-center justify-center px-4 py-10">
+        <div class="max-w-md w-full glass-card p-8">
+            
+            <!-- Role Selector Tabs -->
+            <div class="flex mb-6 bg-gray-200 p-1 rounded-xl">
+                <button onclick="setRole('customer')" id="tabCustomer" class="flex-1 py-2 text-sm font-bold rounded-lg bg-blue-600 text-white transition">Customer</button>
+                <button onclick="setRole('worker')" id="tabWorker" class="flex-1 py-2 text-sm font-bold rounded-lg text-gray-700 transition">Worker</button>
+            </div>
+
+            <!-- Title & Mode Info -->
+            <div class="text-center mb-6">
+                <h2 id="formTitle" class="text-2xl font-bold text-gray-800">Customer Signup</h2>
+                <p id="formSub" class="text-xs text-gray-500 mt-1">Create your account to book home services</p>
+            </div>
+
+            <!-- Success Message Box -->
+            <div id="successMsg" class="hidden mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-xl text-center text-sm font-semibold">
+                🎉 Account created successfully! Now you can Sign In.
+            </div>
+
+            <!-- Auth Form -->
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+                
+                <!-- Mobile Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Mobile Number:</label>
+                    <input type="tel" id="mobile" placeholder="E.g., 9876543210" pattern="[0-9]{10}" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                </div>
+
+                <!-- Email ID -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Email ID:</label>
+                    <input type="email" id="email" placeholder="E.g., name@gmail.com" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Password (Min 6 characters):</label>
+                    <input type="password" id="password" placeholder="********" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                </div>
+
+                <!-- Work Type Selection (Only for Worker Signup) -->
+                <div id="workTypeContainer" class="hidden">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Expertise / Work Type:</label>
+                    <select id="workType" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm bg-white">
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Painting">Painting</option>
+                    </select>
+                </div>
+
+                <!-- Action Button -->
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-300">
+                    Sign Up
+                </button>
+            </form>
+
+            <!-- Toggle Between Signup / Signin -->
+            <div class="text-center mt-6">
+                <p id="toggleText" class="text-xs text-gray-600">
+                    Already have an account? <a href="#" onclick="toggleMode()" class="text-blue-600 font-bold hover:underline">Sign In</a>
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-blue-200 text-xs bg-black/20">
+        &copy; 2026 Gharkam.com | Pune City
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        let currentRole = 'customer'; 
+        let isSignupMode = true;      
+        let userLocationAllowed = false;
+
+        window.onload = function() {
+            requestUserLocation();
+            updateFormUI();
+        };
+
+        function requestUserLocation() {
+            const statusBadge = document.getElementById('location-status');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocationAllowed = true;
+                        statusBadge.innerText = "📍 Pune Verified";
+                        statusBadge.className = "text-xs bg-green-500 text-white px-3 py-1.5 rounded-full font-semibold shadow-inner";
+                    },
+                    (error) => {
+                        userLocationAllowed = false;
+                        statusBadge.innerText = "⚠️ Location Needed!";
+                        statusBadge.className = "text-xs bg-red-500 text-white px-3 py-1.5 rounded-full font-semibold shadow-inner";
+                    }
+                );
+            }
+        }
+
+        function setRole(role) {
+            currentRole = role;
+            const tabC = document.getElementById('tabCustomer');
+            const tabW = document.getElementById('tabWorker');
+
+            if (role === 'customer') {
+                tabC.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-blue-600 text-white transition";
+                tabW.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-700 transition";
+            } else {
+                tabW.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-yellow-500 text-gray-900 transition";
+                tabC.className = "flex-1 py-2 text-sm font-bold rounded-lg text-gray-700 transition";
+            }
+            updateFormUI();
+        }
+
+        function toggleMode() {
+            isSignupMode = !isSignupMode;
+            document.getElementById('successMsg').classList.add('hidden');
+            updateFormUI();
+        }
+
+        function updateFormUI() {
+            const title = document.getElementById('formTitle');
+            const sub = document.getElementById('formSub');
+            const btn = document.getElementById('submitBtn');
+            const toggleTxt = document.getElementById('toggleText');
+            const workTypeContainer = document.getElementById('workTypeContainer');
+
+            let roleName = currentRole === 'customer' ? 'Customer' : 'Worker';
+
+            // Show work type dropdown only if it's signup mode AND worker role
+            if (isSignupMode && currentRole === 'worker') {
+                workTypeContainer.classList.remove('hidden');
+            } else {
+                workTypeContainer.classList.add('hidden');
+            }
+
+            if (isSignupMode) {
+                title.innerText = roleName + " Signup";
+                sub.innerText = "Create your account to get started";
+                btn.innerText = "Sign Up";
+                btn.className = currentRole === 'customer' ? "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition" : "w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-xl shadow-lg transition";
+                toggleTxt.innerHTML = `Already have an account? <a href="#" onclick="toggleMode()" class="text-blue-600 font-bold hover:underline">Sign In</a>`;
+            } else {
+                title.innerText = roleName + " Sign In";
+                sub.innerText = "Welcome back! Please login to your account";
+                btn.innerText = "Sign In";
+                btn.className = currentRole === 'customer' ? "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition" : "w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-xl shadow-lg transition";
+                toggleTxt.innerHTML = `Don't have an account? <a href="#" onclick="toggleMode()" class="text-blue-600 font-bold hover:underline">Sign Up</a>`;
+            }
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+
+            if (!userLocationAllowed) {
+                alert("Krupaya location access allow kara!");
+                requestUserLocation();
+                return;
+            }
+
+            let mobile = document.getElementById('mobile').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+
+            if (isSignupMode) {
+                if (password.length < 6) {
+                    alert("Password kamit kami 6 characters cha asala pahije!");
+                    return;
+                }
+
+                if (localStorage.getItem('gharkam_user_' + mobile)) {
+                    alert("Ha mobile number already registered ahe!");
+                    return;
+                }
+
+                // Capture workType if worker
+                let selectedWorkType = (currentRole === 'worker') ? document.getElementById('workType').value : null;
+
+                let userData = { 
+                    mobile, email, password, role: currentRole, balance: 50, 
+                    workType: selectedWorkType 
+                };
+                localStorage.setItem('gharkam_user_' + mobile, JSON.stringify(userData));
+
+                document.getElementById('successMsg').innerText = "🎉 Account created successfully! Now you can Sign In.";
+                document.getElementById('successMsg').classList.remove('hidden');
+                document.getElementById('authForm').reset();
+                
+                setTimeout(() => {
+                    toggleMode();
+                }, 2000);
+
+            } else {
+                let savedUserJson = localStorage.getItem('gharkam_user_' + mobile);
+                
+                if (savedUserJson) {
+                    let savedUser = JSON.parse(savedUserJson);
+                    
+                    if (savedUser.password === password) {
+                        if (savedUser.role === currentRole) {
+                            localStorage.setItem('current_user_session', JSON.stringify(savedUser));
+                            
+                            alert("Login successful!");
+                            if (currentRole === 'customer') {
+                                window.location.href = "customer.html";
+                            } else {
+                                window.location.href = "worker.html";
+                            }
+                        } else {
+                            alert("Ha mobile number " + savedUser.role + " mhanun registered ahe!");
+                        }
+                    } else {
+                        alert("चुकीचा पासवर्ड! (Wrong Password)");
+                    }
+                } else {
+                    alert("Account सापडले नाही! कृपया आधी Sign Up करा.");
+                }
+            }
+        }
+    </script>
+</body>
+  </html>
+  
