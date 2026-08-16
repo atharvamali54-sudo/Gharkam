@@ -21,39 +21,15 @@
                     <h1 id="workerNameDisplay" class="text-xl font-bold tracking-wide">WORKER</h1>
                     <p class="text-xs text-yellow-200 mt-0.5">DE ID : <span id="workerIdDisplay">32258019</span> | Type: <span id="workerTypeDisplay" class="font-bold underline">--</span></p>
                 </div>
-                <!-- Hero Badge -->
                 <div class="bg-black/25 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-2xl flex items-center space-x-1.5 shadow-inner">
                     <span class="text-yellow-400 text-lg">⭐</span>
                     <span class="text-xs font-bold tracking-wider">Hero</span>
                 </div>
             </div>
 
-            <!-- Wallet & Logout -->
             <div class="mt-4 flex justify-between items-center bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20 text-sm">
                 <span>💰 Wallet Balance: <strong class="text-yellow-300">₹<span id="walletBalance">50</span></strong></span>
                 <a href="index.html" class="text-xs bg-red-600 hover:bg-red-700 px-2.5 py-1 rounded-lg text-white font-semibold">Logout</a>
-            </div>
-        </div>
-
-        <!-- Floating Quick Action Boxes -->
-        <div class="max-w-3xl mx-auto px-4 -mt-4">
-            <div class="grid grid-cols-4 gap-2 bg-white p-3 rounded-2xl shadow-lg border border-gray-100 text-center">
-                <div class="cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition">
-                    <div class="text-xl mb-1">👤</div>
-                    <p class="text-[11px] font-semibold text-gray-700 leading-tight">My Profile</p>
-                </div>
-                <div class="cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition">
-                    <div class="text-xl mb-1">💵</div>
-                    <p class="text-[11px] font-semibold text-gray-700 leading-tight">Floating Cash</p>
-                </div>
-                <div class="cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition">
-                    <div class="text-xl mb-1">⚠️</div>
-                    <p class="text-[11px] font-semibold text-gray-700 leading-tight">Wrong Action</p>
-                </div>
-                <div class="cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition">
-                    <div class="text-xl mb-1">💬</div>
-                    <p class="text-[11px] font-semibold text-gray-700 leading-tight">Message Center</p>
-                </div>
             </div>
         </div>
 
@@ -90,13 +66,11 @@
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
                 <h3 class="text-sm font-bold text-gray-800 mb-3">Incoming Orders Matching Your Type</h3>
 
-                <!-- Searching State -->
                 <div id="searchingState" class="hidden text-center py-8 text-blue-600">
                     <p class="text-3xl mb-1 animate-bounce">🔍</p>
                     <p class="font-bold text-sm">Searching matching orders for your service type...</p>
                 </div>
 
-                <!-- Empty State -->
                 <div id="emptyState" class="text-center py-8 text-gray-400">
                     <p class="text-3xl mb-1">📭</p>
                     <p class="text-xs font-medium">Duty OFF aahe. Duty ON kelyanantar matching order disel.</p>
@@ -111,11 +85,17 @@
                     <p class="text-xs text-gray-700"><strong>Area:</strong> <span id="orderAreaText">--</span></p>
                     <p class="text-xs text-gray-700"><strong>Address:</strong> <span id="orderAddress">--</span></p>
                     
-                    <div class="flex space-x-2 pt-1">
-                        <button onclick="acceptOrder()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 text-xs rounded-lg transition">
+                    <!-- Customer Photo Display Section -->
+                    <div id="photoContainer" class="hidden pt-1">
+                        <p class="text-[11px] font-bold text-gray-700 mb-1">Kamacha Photo:</p>
+                        <img id="orderPhotoImg" src="" alt="Work Photo" class="w-full h-36 object-cover rounded-lg border border-blue-300 shadow-inner">
+                    </div>
+
+                    <div class="flex space-x-2 pt-2">
+                        <button onclick="acceptOrder()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 text-xs rounded-lg transition shadow">
                             Accept & Open Maps
                         </button>
-                        <button onclick="rejectOrder()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 text-xs rounded-lg transition">
+                        <button onclick="rejectOrder()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 text-xs rounded-lg transition shadow">
                             Reject
                         </button>
                     </div>
@@ -130,61 +110,8 @@
                     </button>
                 </div>
             </div>
-
-            <!-- List Options Menu -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 divide-y divide-gray-100 overflow-hidden text-sm">
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700">Refer & Earn</span>
-                    <span class="text-xs bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded-md">Upto ₹20,000</span>
-                </div>
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700">Partner club</span>
-                    <span class="text-gray-400">&rsaquo;</span>
-                </div>
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700">Insurance</span>
-                    <span class="text-gray-400">&rsaquo;</span>
-                </div>
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700 flex items-center">Fleet manager meetings <span class="ml-2 text-[10px] bg-orange-500 text-white px-1.5 py-0.2 rounded font-bold">NEW</span></span>
-                    <span class="text-gray-400">&rsaquo;</span>
-                </div>
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700">Help & Support</span>
-                    <span class="text-gray-400">&rsaquo;</span>
-                </div>
-                <div class="p-3.5 flex justify-between items-center hover:bg-gray-50 cursor-pointer">
-                    <span class="font-medium text-gray-700">Ways to earn</span>
-                    <span class="text-gray-400">&rsaquo;</span>
-                </div>
-            </div>
-
         </main>
     </div>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 flex justify-around items-center z-50 text-xs">
-        <button class="flex flex-col items-center text-orange-600 font-bold">
-            <span class="text-lg">🏠</span>
-            <span>Home</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-500 hover:text-orange-600">
-            <span class="text-lg">💰</span>
-            <span>Earnings</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-500 hover:text-orange-600">
-            <span class="text-lg">📋</span>
-            <span>My Shifts</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-500 hover:text-orange-600">
-            <span class="text-lg">👥</span>
-            <span>Refer</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-500 hover:text-orange-600">
-            <span class="text-lg">🟧</span>
-            <span>More</span>
-        </button>
-    </nav>
 
     <!-- Logic Script -->
     <script>
@@ -196,6 +123,11 @@
             let sessionJson = localStorage.getItem('current_user_session');
             if (sessionJson) {
                 workerSession = JSON.parse(sessionJson);
+                if (workerSession.role !== 'worker') {
+                    alert("Unauthorized access!");
+                    window.location.href = "index.html";
+                    return;
+                }
                 document.getElementById('walletBalance').innerText = workerSession.balance ?? 50;
                 
                 if(workerSession.email) {
@@ -252,11 +184,11 @@
             let savedOrder = localStorage.getItem('gharkamActiveOrder');
             const searchingState = document.getElementById('searchingState');
             const orderCard = document.getElementById('orderCard');
+            const photoContainer = document.getElementById('photoContainer');
 
             if (savedOrder) {
                 currentOrderData = JSON.parse(savedOrder);
                 
-                // Area and WorkType validation matching check
                 let isAreaMatch = (currentOrderData.area === workerArea);
                 let isWorkTypeMatch = (!workerSession.workType || currentOrderData.service === workerSession.workType);
 
@@ -266,6 +198,15 @@
                     document.getElementById('orderBudget').innerText = "Budget: ₹" + currentOrderData.budget;
                     document.getElementById('orderAreaText').innerText = currentOrderData.area;
                     document.getElementById('orderAddress').innerText = currentOrderData.address;
+                    
+                    // Display uploaded photo if available
+                    if (currentOrderData.photo) {
+                        document.getElementById('orderPhotoImg').src = currentOrderData.photo;
+                        photoContainer.classList.remove('hidden');
+                    } else {
+                        photoContainer.classList.add('hidden');
+                    }
+
                     orderCard.classList.remove('hidden');
                 } else {
                     searchingState.classList.remove('hidden');
@@ -289,9 +230,9 @@
                 return;
             }
 
+            // Google Maps direction/search integration
             let customerAddress = currentOrderData ? currentOrderData.address : "Pune"; 
             let mapUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(customerAddress);
-            
             window.open(mapUrl, '_blank');
             
             document.getElementById('orderCard').classList.add('hidden');
@@ -324,5 +265,4 @@
         }
     </script>
 </body>
-                  </html>
-
+</html>
