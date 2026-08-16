@@ -13,6 +13,7 @@
             0% { opacity: 1; }
             50% { opacity: 0.3; }
             100% { opacity: 1; }
+        }
         .blink-text { animation: blink 1.5s infinite; }
     </style>
 </head>
@@ -129,16 +130,28 @@
         </main>
     </div>
 
-    <!-- Add Money QR Modal -->
+    <!-- Add Money UPI & QR Modal -->
     <div id="qrModal" class="hidden fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
             <button onclick="closeAddMoneyModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-lg font-bold">✕</button>
             <h3 class="font-bold text-lg text-gray-800">Recharge Wallet</h3>
-            <p class="text-xs text-gray-600">Google Pay, PhonePe ya konthya hi UPI app varun scan karun paise send kara.</p>
+            <p class="text-xs text-gray-600">Google Pay, PhonePe kiva kontya hi UPI app varun direct paise pathvanyasathi khaliil button dabva ya QR scan kara.</p>
             
-            <!-- QR Image -->
-            <div class="flex justify-center border p-2 rounded-xl bg-gray-50">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali" alt="UPI QR Code" class="w-44 h-44 object-contain">
+            <!-- Direct UPI App Button -->
+            <div>
+                <a href="upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali&cu=INR" 
+                   class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md transition duration-200 text-center">
+                   📱 Open Google Pay / PhonePe to Pay
+                </a>
+                <p class="text-[10px] text-gray-400 mt-1">Yavar click kelyavar mobile madhe GPay/PhonePe open hoil, tithe tumhi hawa tevdha amount taku shakta.</p>
+            </div>
+
+            <div class="border-t pt-3">
+                <p class="text-[11px] font-semibold text-gray-700 mb-2">Kinva QR Code Scan Kara:</p>
+                <!-- QR Image using your UPI ID -->
+                <div class="flex justify-center border p-2 rounded-xl bg-gray-50 inline-block">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali" alt="UPI QR Code" class="w-36 h-36 object-contain">
+                </div>
             </div>
 
             <div class="bg-blue-50 p-2.5 rounded-xl border border-blue-200">
@@ -146,9 +159,9 @@
                 <p class="text-xs font-bold text-blue-700 select-all">maliatulmali07@okicici</p>
             </div>
 
-            <div class="pt-2 flex space-x-2">
+            <div class="pt-1 flex space-x-2">
                 <button onclick="simulateAddMoney(50)" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl text-xs transition">
-                    + Add ₹50 (Test)
+                    + Add ₹50 (Test Update)
                 </button>
                 <button onclick="closeAddMoneyModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 rounded-xl text-xs transition">
                     Close
@@ -178,7 +191,6 @@
                     return;
                 }
                 
-                // Default balance if not set
                 if (workerSession.balance === undefined) {
                     workerSession.balance = 50;
                 }
@@ -210,8 +222,13 @@
             if (workerSession.balance < 50) {
                 warningEl.classList.remove('hidden');
                 if (isDutyOn) {
-                    // Force turn off duty if balance drops below 50
-                    toggleDuty();
+                    isDutyOn = false;
+                    const btn = document.getElementById('dutyBtn');
+                    btn.innerText = "🔴 Duty OFF (Click ON)";
+                    btn.className = "w-full py-2.5 px-4 text-sm rounded-xl font-bold transition duration-300 bg-red-500 text-white shadow-md";
+                    document.getElementById('searchingState').classList.add('hidden');
+                    document.getElementById('orderCard').classList.add('hidden');
+                    document.getElementById('emptyState').classList.remove('hidden');
                 }
             } else {
                 warningEl.classList.add('hidden');
@@ -287,14 +304,14 @@
 
                     orderCard.classList.remove('hidden');
                 } else {
-                    searchingState.classList.remove('hidden');
+                    searchingState.classList.add('hidden');
                     orderCard.classList.add('hidden');
                     if(isDutyOn) {
                         setTimeout(() => checkForOrders(workerArea), 3000);
                     }
                 }
             } else {
-                searchingState.classList.remove('hidden');
+                searchingState.classList.add('hidden');
                 orderCard.classList.add('hidden');
                 if(isDutyOn) {
                     setTimeout(() => checkForOrders(workerArea), 3000);
@@ -349,7 +366,6 @@
             document.getElementById('qrModal').classList.add('hidden');
         }
 
-        // Test button sathi function (Actual project madhe worker gpay varun paise pathvun ithe add karu shakto)
         function simulateAddMoney(amount) {
             workerSession.balance += amount;
             updateWalletUI();
