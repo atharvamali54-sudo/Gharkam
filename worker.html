@@ -132,38 +132,38 @@
 
     <!-- Add Money UPI & QR Modal -->
     <div id="qrModal" class="hidden fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-3 shadow-2xl relative">
             <button onclick="closeAddMoneyModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-lg font-bold">✕</button>
-            <h3 class="font-bold text-lg text-gray-800">Recharge Wallet</h3>
-            <p class="text-xs text-gray-600">Google Pay, PhonePe kiva kontya hi UPI app varun direct paise pathvanyasathi khaliil button dabva ya QR scan kara.</p>
+            <h3 class="font-bold text-base text-gray-800">Recharge Wallet</h3>
+            <p class="text-xs text-gray-600">Google Pay, PhonePe varun direct paise pathvanyasathi khaliil button dabva kinva QR scan kara.</p>
             
-            <!-- Direct UPI App Button -->
+            <!-- Direct App Intent Button -->
             <div>
-                <a href="upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali&cu=INR" 
-                   class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md transition duration-200 text-center">
-                   📱 Open Google Pay / PhonePe to Pay
+                <a href="intent://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali&cu=INR#Intent;scheme=upi;end;" 
+                   class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-md transition text-center">
+                   📱 Open Google Pay / PhonePe App
                 </a>
-                <p class="text-[10px] text-gray-400 mt-1">Yavar click kelyavar mobile madhe GPay/PhonePe open hoil, tithe tumhi hawa tevdha amount taku shakta.</p>
             </div>
 
-            <div class="border-t pt-3">
-                <p class="text-[11px] font-semibold text-gray-700 mb-2">Kinva QR Code Scan Kara:</p>
+            <div class="border-t pt-2">
+                <p class="text-[11px] font-semibold text-gray-700 mb-1">Kinva QR Code Scan Kara:</p>
                 <!-- QR Image using your UPI ID -->
                 <div class="flex justify-center border p-2 rounded-xl bg-gray-50 inline-block">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali" alt="UPI QR Code" class="w-36 h-36 object-contain">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=maliatulmali07@okicici&pn=Atharva%20Mali" alt="UPI QR Code" class="w-32 h-32 object-contain">
                 </div>
             </div>
 
-            <div class="bg-blue-50 p-2.5 rounded-xl border border-blue-200">
-                <p class="text-[11px] text-gray-500 font-semibold">UPI ID:</p>
-                <p class="text-xs font-bold text-blue-700 select-all">maliatulmali07@okicici</p>
+            <!-- UPI ID Box with Click to Copy -->
+            <div class="bg-blue-50 p-2 rounded-xl border border-blue-200">
+                <p class="text-[10px] text-gray-500 font-semibold">UPI ID (Tap to Copy):</p>
+                <p class="text-xs font-bold text-blue-700 select-all cursor-pointer" onclick="navigator.clipboard.writeText('maliatulmali07@okicici'); alert('UPI ID Copied!');">maliatulmali07@okicici 📋</p>
             </div>
 
-            <div class="pt-1 flex space-x-2">
-                <button onclick="simulateAddMoney(50)" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl text-xs transition">
-                    + Add ₹50 (Test Update)
+            <div class="pt-1 flex flex-col space-y-2">
+                <button onclick="simulateAddMoney(50)" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow">
+                    ✅ Paise Pathavle - Add ₹50 (Test Update)
                 </button>
-                <button onclick="closeAddMoneyModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 rounded-xl text-xs transition">
+                <button onclick="closeAddMoneyModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 rounded-xl text-xs transition">
                     Close
                 </button>
             </div>
